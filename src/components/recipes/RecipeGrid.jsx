@@ -8,14 +8,14 @@ function RecipeGrid({ recipes, onOpen }) {
         title="All recipes"
         subtitle="Library"
         action={
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-[var(--muted)]">
             Showing {recipes.length} recipes
           </p>
         }
       />
 
       {recipes.length === 0 ? (
-        <div className="rounded-3xl border border-dashed border-slate-300 bg-white/60 p-10 text-center text-slate-600">
+        <div className="rounded-3xl border border-dashed border-[var(--border)] bg-[var(--surface)]/80 p-10 text-center text-[var(--muted)]">
           No recipes match your filters.
         </div>
       ) : (

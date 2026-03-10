@@ -7,7 +7,7 @@ function CategoriesSection({ cuisines, activeCuisine, onSelect }) {
         title="Explore by cuisine"
         subtitle="Categories"
         action={
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-[var(--muted)]">
             Tap a cuisine to refine your list.
           </p>
         }
@@ -23,8 +23,8 @@ function CategoriesSection({ cuisines, activeCuisine, onSelect }) {
               onClick={() => onSelect(item)}
               className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
                 isActive
-                  ? "border-[#e07a5f] bg-[#e07a5f] text-white shadow"
-                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900"
+                  ? "border-[var(--accent)] bg-[var(--accent)] text-white shadow"
+                  : "border-[var(--border)] bg-[var(--surface)]/80 text-[var(--muted)] hover:border-[var(--accent)] hover:text-white"
               }`}
             >
               {item}

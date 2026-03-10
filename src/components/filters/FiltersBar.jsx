@@ -11,23 +11,23 @@ function FiltersBar({
   tags,
 }) {
   return (
-    <section className="flex flex-col gap-4 rounded-3xl border border-black/10 bg-white/80 p-6 shadow-sm">
+    <section className="flex flex-col gap-4 rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 p-6 shadow-sm">
       <div className="flex flex-col gap-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-700">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--muted)]">
           Filter
         </p>
-        <h3 className="font-display text-xl text-slate-900">
+        <h3 className="font-display text-xl text-[var(--text)]">
           Refine your recipe board
         </h3>
       </div>
 
       <div className="grid gap-4 md:grid-cols-4">
-        <label className="flex flex-col gap-2 text-sm font-semibold text-slate-600">
+        <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--muted)]">
           Difficulty
           <select
             value={difficulty}
             onChange={(event) => onDifficultyChange(event.target.value)}
-            className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm outline-none focus:border-slate-400"
+            className="rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] shadow-sm outline-none focus:border-[var(--accent)]"
           >
             {["All", "Easy", "Medium", "Hard"].map((level) => (
               <option key={level} value={level}>
@@ -37,12 +37,12 @@ function FiltersBar({
           </select>
         </label>
 
-        <label className="flex flex-col gap-2 text-sm font-semibold text-slate-600">
+        <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--muted)]">
           Cuisine
           <select
             value={cuisine}
             onChange={(event) => onCuisineChange(event.target.value)}
-            className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm outline-none focus:border-slate-400"
+            className="rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] shadow-sm outline-none focus:border-[var(--accent)]"
           >
             {cuisines.map((item) => (
               <option key={item} value={item}>
@@ -52,12 +52,12 @@ function FiltersBar({
           </select>
         </label>
 
-        <label className="flex flex-col gap-2 text-sm font-semibold text-slate-600">
+        <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--muted)]">
           Max time
           <select
             value={maxTime}
             onChange={(event) => onMaxTimeChange(event.target.value)}
-            className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm outline-none focus:border-slate-400"
+            className="rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] shadow-sm outline-none focus:border-[var(--accent)]"
           >
             {[
               { label: "Any", value: "Any" },
@@ -74,12 +74,12 @@ function FiltersBar({
           </select>
         </label>
 
-        <label className="flex flex-col gap-2 text-sm font-semibold text-slate-600">
+        <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--muted)]">
           Tag
           <select
             value={tag}
             onChange={(event) => onTagChange(event.target.value)}
-            className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 shadow-sm outline-none focus:border-slate-400"
+            className="rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] shadow-sm outline-none focus:border-[var(--accent)]"
           >
             {tags.map((item) => (
               <option key={item} value={item}>

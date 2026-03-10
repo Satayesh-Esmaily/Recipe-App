@@ -1,0 +1,18 @@
+@layer base {
+  :root {
+    color-scheme: dark;
+    --bg-1: #110808;
+    --bg-2: #1b0b0b;
+    --bg-3: #2a0f0f;
+    --surface: #1a0b0b;
+    --surface-2: #120808;
+    --border: #3a1515;
+    --border-strong: #5a2424;
+    --text: #f7eaea;
+    --muted: #c9a8a8;
+    --muted-2: #b58a8a;
+    --accent: #c1121f;
+    --accent-2: #ff4d6d;
+    --glow: rgba(193, 18, 31, 0.28);
+  }
+}

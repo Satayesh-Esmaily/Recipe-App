@@ -14,7 +14,7 @@ function FeaturedSection({ recipes, onOpen }) {
         action={
           <button
             type="button"
-            className="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-400 hover:text-slate-900"
+            className="rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm font-semibold text-[var(--text)] hover:border-[var(--accent)] hover:text-white"
           >
             View all
           </button>
