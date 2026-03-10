@@ -1,17 +1,34 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRecipes } from "../features/recipes/recipesSlice";
+import RecipeDetailsModal from "../components/recipes/RecipeDetailsModal";
 
 function CollectionsPage() {
   const dispatch = useDispatch();
   const { recipes, loading, error } = useSelector((state) => state.recipes);
   const [activeCollection, setActiveCollection] = useState("Quick & Easy");
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [savedCollections, setSavedCollections] = useState(() => {
+    try {
+      const stored = localStorage.getItem("saved_collections");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
 
   useEffect(() => {
     if (!recipes.length) {
       dispatch(fetchRecipes());
     }
   }, [dispatch, recipes.length]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "saved_collections",
+      JSON.stringify(savedCollections)
+    );
+  }, [savedCollections]);
 
   const collections = useMemo(() => {
     const totalMinutes = (recipe) =>
@@ -60,6 +77,7 @@ function CollectionsPage() {
   }, [recipes]);
 
   const active = collections.find((item) => item.title === activeCollection);
+  const isSaved = savedCollections.includes(activeCollection);
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-16">
@@ -120,26 +138,56 @@ function CollectionsPage() {
 
           <section className="flex flex-col gap-6">
             <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 p-6">
-              <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted-2)]">
-                Selected collection
-              </p>
-              <h2 className="font-display text-2xl text-[var(--text)]">
-                {active?.title}
-              </h2>
-              <p className="mt-2 text-sm text-[var(--muted)]">
-                {active?.description}
-              </p>
+              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted-2)]">
+                    Selected collection
+                  </p>
+                  <h2 className="font-display text-2xl text-[var(--text)]">
+                    {active?.title}
+                  </h2>
+                  <p className="mt-2 text-sm text-[var(--muted)]">
+                    {active?.description}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSavedCollections((prev) =>
+                      prev.includes(activeCollection)
+                        ? prev.filter((item) => item !== activeCollection)
+                        : [...prev, activeCollection]
+                    )
+                  }
+                  className={`rounded-full border px-4 py-2 text-xs font-semibold transition ${
+                    isSaved
+                      ? "border-[var(--accent)] bg-[var(--accent)] text-white"
+                      : "border-[var(--border-strong)] bg-[var(--surface-2)] text-[var(--text)] hover:border-[var(--accent)]"
+                  }`}
+                >
+                  {isSaved ? "Saved collection" : "Save collection"}
+                </button>
+              </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               {(active?.recipes || []).slice(0, 8).map((recipe) => (
                 <article
                   key={recipe.id}
-                  className="flex flex-col gap-3 rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 p-5"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setSelectedRecipe(recipe)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setSelectedRecipe(recipe);
+                    }
+                  }}
+                  className="flex cursor-pointer flex-col gap-3 rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 p-5 transition hover:-translate-y-1 hover:shadow-lg"
                 >
                   <div className="flex items-center justify-between text-xs text-[var(--muted-2)]">
                     <span>{recipe.cuisine || "Cuisine"}</span>
-                    <span>⭐ {recipe.rating?.toFixed(1) || "4.5"}</span>
+                    <span>Rating {recipe.rating?.toFixed(1) || "4.5"}</span>
                   </div>
                   <h3 className="font-display text-lg text-[var(--text)]">
                     {recipe.name}
@@ -161,6 +209,10 @@ function CollectionsPage() {
           </section>
         </div>
       )}
+      <RecipeDetailsModal
+        recipe={selectedRecipe}
+        onClose={() => setSelectedRecipe(null)}
+      />
     </main>
   );
 }
