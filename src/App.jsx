@@ -6,6 +6,7 @@ import CategoriesPage from "./pages/CategoriesPage";
 import CategoryDetailPage from "./pages/CategoryDetailPage";
 import CollectionsPage from "./pages/CollectionsPage";
 import AboutPage from "./pages/AboutPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="categories/:cuisine" element={<CategoryDetailPage />} />
         <Route path="collections" element={<CollectionsPage />} />
         <Route path="about" element={<AboutPage />} />
+        <Route path="profile" element={<ProfilePage />} />
       </Route>
     </Routes>
   );

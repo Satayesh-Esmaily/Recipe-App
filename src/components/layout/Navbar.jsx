@@ -59,6 +59,14 @@ function Navbar() {
           >
             About
           </NavLink>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `transition hover:text-white ${isActive ? "text-white" : ""}`
+            }
+          >
+            Profile
+          </NavLink>
         </nav>
 
         <div className="flex items-center gap-3">

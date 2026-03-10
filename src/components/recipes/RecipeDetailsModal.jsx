@@ -23,6 +23,21 @@ function RecipeDetailsModal({ recipe, onClose, onToggleFavorite, isFavorite }) {
   const [activeImage, setActiveImage] = useState(images[0] || "");
   const videoUrl = recipe.video || recipe.videoUrl || "";
 
+  const markCooked = () => {
+    try {
+      const stored = localStorage.getItem("cook_history");
+      const history = stored ? JSON.parse(stored) : [];
+      const entry = {
+        id: recipe.id,
+        cookedAt: new Date().toISOString(),
+      };
+      const next = [entry, ...history].slice(0, 50);
+      localStorage.setItem("cook_history", JSON.stringify(next));
+    } catch {
+      // no-op
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 z-30 flex items-center justify-center bg-[#05030f]/85 p-4"
@@ -65,6 +80,13 @@ function RecipeDetailsModal({ recipe, onClose, onToggleFavorite, isFavorite }) {
                 {isFavorite ? "Saved to favorites" : "Save to favorites"}
               </button>
             )}
+            <button
+              type="button"
+              onClick={markCooked}
+              className="self-start rounded-full border border-[var(--border-strong)] bg-[var(--surface)] px-4 py-2 text-xs font-semibold text-[var(--text)] hover:border-[var(--accent)]"
+            >
+              Mark cooked
+            </button>
             <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)]">
               {activeImage ? (
                 <img
