@@ -7,6 +7,7 @@ import CategoryDetailPage from "./pages/CategoryDetailPage";
 import CollectionsPage from "./pages/CollectionsPage";
 import AboutPage from "./pages/AboutPage";
 import ProfilePage from "./pages/ProfilePage";
+import MealPlannerPage from "./pages/MealPlannerPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="collections" element={<CollectionsPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="planner" element={<MealPlannerPage />} />
       </Route>
     </Routes>
   );

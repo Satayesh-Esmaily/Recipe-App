@@ -60,6 +60,14 @@ function Navbar() {
             About
           </NavLink>
           <NavLink
+            to="/planner"
+            className={({ isActive }) =>
+              `transition hover:text-white ${isActive ? "text-white" : ""}`
+            }
+          >
+            Planner
+          </NavLink>
+          <NavLink
             to="/profile"
             className={({ isActive }) =>
               `transition hover:text-white ${isActive ? "text-white" : ""}`
