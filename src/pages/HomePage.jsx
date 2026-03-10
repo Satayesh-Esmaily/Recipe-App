@@ -20,6 +20,14 @@ function HomePage() {
   const [minCalories, setMinCalories] = useState("");
   const [maxCalories, setMaxCalories] = useState("");
   const [diet, setDiet] = useState("All");
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const stored = localStorage.getItem("recipe_favorites");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   useEffect(() => {
@@ -157,12 +165,29 @@ function HomePage() {
     maxCalories,
   ]);
 
+  useEffect(() => {
+    localStorage.setItem("recipe_favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (id) => {
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const isFavorite = (id) => favorites.includes(id);
+
   return (
     <>
       <Hero query={query} onQueryChange={setQuery} stats={stats} />
 
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 pb-20">
-        <FeaturedSection recipes={featuredRecipes} onOpen={setSelectedRecipe} />
+        <FeaturedSection
+          recipes={featuredRecipes}
+          onOpen={setSelectedRecipe}
+          onToggleFavorite={toggleFavorite}
+          isFavorite={isFavorite}
+        />
 
         <FiltersBar
           difficulty={difficulty}
@@ -199,7 +224,12 @@ function HomePage() {
         )}
 
         {!loading && !error && (
-          <RecipeGrid recipes={filteredRecipes} onOpen={setSelectedRecipe} />
+          <RecipeGrid
+            recipes={filteredRecipes}
+            onOpen={setSelectedRecipe}
+            onToggleFavorite={toggleFavorite}
+            isFavorite={isFavorite}
+          />
         )}
 
         <NewsletterSection />
@@ -208,6 +238,8 @@ function HomePage() {
       <RecipeDetailsModal
         recipe={selectedRecipe}
         onClose={() => setSelectedRecipe(null)}
+        onToggleFavorite={toggleFavorite}
+        isFavorite={selectedRecipe ? isFavorite(selectedRecipe.id) : false}
       />
     </>
   );

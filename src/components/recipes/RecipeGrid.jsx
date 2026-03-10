@@ -1,7 +1,7 @@
 import SectionHeader from "../common/SectionHeader";
 import RecipeCard from "./RecipeCard";
 
-function RecipeGrid({ recipes, onOpen }) {
+function RecipeGrid({ recipes, onOpen, onToggleFavorite, isFavorite }) {
   return (
     <section className="flex flex-col gap-6">
       <SectionHeader
@@ -21,7 +21,13 @@ function RecipeGrid({ recipes, onOpen }) {
       ) : (
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {recipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} onOpen={onOpen} />
+            <RecipeCard
+              key={recipe.id}
+              recipe={recipe}
+              onOpen={onOpen}
+              onToggleFavorite={onToggleFavorite}
+              isFavorite={isFavorite}
+            />
           ))}
         </div>
       )}

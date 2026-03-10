@@ -1,6 +1,13 @@
-function RecipeCard({ recipe, onOpen, variant = "default" }) {
+function RecipeCard({
+  recipe,
+  onOpen,
+  variant = "default",
+  onToggleFavorite,
+  isFavorite,
+}) {
   const totalMinutes = (recipe.prepTimeMinutes || 0) + (recipe.cookTimeMinutes || 0);
   const imageUrl = recipe.image || recipe.thumbnail;
+  const favorite = isFavorite ? isFavorite(recipe.id) : false;
 
   return (
     <button
@@ -26,6 +33,22 @@ function RecipeCard({ recipe, onOpen, variant = "default" }) {
         <div className="absolute left-3 top-3 rounded-full bg-[var(--surface-2)]/90 px-3 py-1 text-xs font-semibold text-[var(--text)] shadow">
           {recipe.difficulty || "Unknown"}
         </div>
+        {onToggleFavorite && (
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation();
+              onToggleFavorite(recipe.id);
+            }}
+            className={`absolute right-3 top-3 rounded-full border px-3 py-1 text-xs font-semibold transition ${
+              favorite
+                ? "border-[var(--accent)] bg-[var(--accent)] text-white"
+                : "border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] hover:border-[var(--accent)]"
+            }`}
+          >
+            {favorite ? "Saved" : "Save"}
+          </button>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-4">

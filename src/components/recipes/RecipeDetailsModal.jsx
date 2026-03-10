@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-function RecipeDetailsModal({ recipe, onClose }) {
+function RecipeDetailsModal({ recipe, onClose, onToggleFavorite, isFavorite }) {
   if (!recipe) {
     return null;
   }
@@ -52,6 +52,19 @@ function RecipeDetailsModal({ recipe, onClose }) {
 
         <div className="grid max-h-[80vh] gap-6 overflow-y-auto p-6 md:grid-cols-[1.1fr_1fr]">
           <div className="flex flex-col gap-4">
+            {onToggleFavorite && (
+              <button
+                type="button"
+                onClick={() => onToggleFavorite(recipe.id)}
+                className={`self-start rounded-full border px-4 py-2 text-xs font-semibold transition ${
+                  isFavorite
+                    ? "border-[var(--accent)] bg-[var(--accent)] text-white"
+                    : "border-[var(--border)] bg-[var(--surface)] text-[var(--text)] hover:border-[var(--accent)]"
+                }`}
+              >
+                {isFavorite ? "Saved to favorites" : "Save to favorites"}
+              </button>
+            )}
             <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)]">
               {activeImage ? (
                 <img
