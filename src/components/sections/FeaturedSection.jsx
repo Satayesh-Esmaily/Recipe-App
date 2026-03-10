@@ -1,7 +1,13 @@
 import SectionHeader from "../common/SectionHeader";
 import RecipeCard from "../recipes/RecipeCard";
 
-function FeaturedSection({ recipes, onOpen, onToggleFavorite, isFavorite }) {
+function FeaturedSection({
+  recipes,
+  onOpen,
+  onToggleFavorite,
+  isFavorite,
+  onViewAll,
+}) {
   if (!recipes.length) {
     return null;
   }
@@ -14,6 +20,7 @@ function FeaturedSection({ recipes, onOpen, onToggleFavorite, isFavorite }) {
         action={
           <button
             type="button"
+            onClick={onViewAll}
             className="rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm font-semibold text-[var(--text)] hover:border-[var(--accent)] hover:text-white"
           >
             View all

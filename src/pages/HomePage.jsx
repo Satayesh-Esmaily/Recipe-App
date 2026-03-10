@@ -184,7 +184,16 @@ function HomePage() {
 
   return (
     <>
-      <Hero query={query} onQueryChange={setQuery} stats={stats} />
+      <Hero
+        query={query}
+        onQueryChange={setQuery}
+        stats={stats}
+        onExplore={() =>
+          document.getElementById("recipes-section")?.scrollIntoView({
+            behavior: "smooth",
+          })
+        }
+      />
 
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 pb-20">
         <FeaturedSection
@@ -192,6 +201,11 @@ function HomePage() {
           onOpen={setSelectedRecipe}
           onToggleFavorite={toggleFavorite}
           isFavorite={isFavorite}
+          onViewAll={() =>
+            document.getElementById("recipes-section")?.scrollIntoView({
+              behavior: "smooth",
+            })
+          }
         />
 
         <FiltersBar
@@ -229,12 +243,14 @@ function HomePage() {
         )}
 
         {!loading && !error && (
-          <RecipeGrid
-            recipes={filteredRecipes}
-            onOpen={setSelectedRecipe}
-            onToggleFavorite={toggleFavorite}
-            isFavorite={isFavorite}
-          />
+          <div id="recipes-section">
+            <RecipeGrid
+              recipes={filteredRecipes}
+              onOpen={setSelectedRecipe}
+              onToggleFavorite={toggleFavorite}
+              isFavorite={isFavorite}
+            />
+          </div>
         )}
 
         <ShoppingList recipes={favoriteRecipes} />

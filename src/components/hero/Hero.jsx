@@ -1,6 +1,6 @@
 import StatPill from "../common/StatPill";
 
-function Hero({ query, onQueryChange, stats }) {
+function Hero({ query, onQueryChange, stats, onExplore }) {
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_var(--glow),_transparent_55%)]" />
@@ -41,6 +41,7 @@ function Hero({ query, onQueryChange, stats }) {
           </div>
           <button
             type="button"
+            onClick={onExplore}
             className="rounded-2xl bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[var(--accent-2)]"
           >
             Explore recipes
