@@ -11,7 +11,7 @@ function App() {
     <Routes>
       <Route element={<AppLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="featured" element={<FeaturedPage />} />
+        <Route path="favorites" element={<FeaturedPage />} />
         <Route path="categories" element={<CategoriesPage />} />
         <Route path="collections" element={<CollectionsPage />} />
         <Route path="about" element={<AboutPage />} />

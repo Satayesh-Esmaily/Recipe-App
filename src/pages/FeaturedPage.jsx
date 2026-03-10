@@ -28,10 +28,8 @@ function FeaturedPage() {
   }, [favorites]);
 
   const featuredRecipes = useMemo(() => {
-    return [...recipes]
-      .sort((a, b) => (b.rating || 0) - (a.rating || 0))
-      .slice(0, 18);
-  }, [recipes]);
+    return recipes.filter((recipe) => favorites.includes(recipe.id));
+  }, [recipes, favorites]);
 
   const toggleFavorite = (id) => {
     setFavorites((prev) =>
@@ -45,19 +43,19 @@ function FeaturedPage() {
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-16">
       <header className="flex flex-col gap-4 rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 p-8">
         <p className="text-xs uppercase tracking-[0.3em] text-[var(--muted)]">
-          Featured
+          Favorites
         </p>
         <h1 className="font-display text-3xl text-[var(--text)]">
-          Top-rated recipes
+          Saved recipes
         </h1>
         <p className="max-w-2xl text-sm text-[var(--muted)]">
-          A curated list of the highest-rated recipes in the collection.
+          All recipes you bookmarked appear here.
         </p>
       </header>
 
       {loading && (
         <div className="rounded-3xl border border-dashed border-[var(--border)] bg-[var(--surface)]/80 p-10 text-center text-[var(--muted)]">
-          Loading featured recipes...
+          Loading saved recipes...
         </div>
       )}
 
@@ -67,7 +65,13 @@ function FeaturedPage() {
         </div>
       )}
 
-      {!loading && !error && (
+      {!loading && !error && featuredRecipes.length === 0 && (
+        <div className="rounded-3xl border border-dashed border-[var(--border)] bg-[var(--surface)]/80 p-10 text-center text-[var(--muted)]">
+          You have no saved recipes yet. Save a few to see them here.
+        </div>
+      )}
+
+      {!loading && !error && featuredRecipes.length > 0 && (
         <RecipeGrid
           recipes={featuredRecipes}
           onOpen={setSelectedRecipe}

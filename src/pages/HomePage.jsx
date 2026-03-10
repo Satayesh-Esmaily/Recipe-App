@@ -190,7 +190,7 @@ function HomePage() {
         query={query}
         onQueryChange={setQuery}
         stats={stats}
-        onExplore={() => navigate("/featured")}
+        onExplore={() => navigate("/favorites")}
       />
 
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 pb-20">
@@ -199,7 +199,7 @@ function HomePage() {
           onOpen={setSelectedRecipe}
           onToggleFavorite={toggleFavorite}
           isFavorite={isFavorite}
-          onViewAll={() => navigate("/featured")}
+          onViewAll={() => navigate("/favorites")}
         />
 
         <FiltersBar
