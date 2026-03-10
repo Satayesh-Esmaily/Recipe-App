@@ -7,8 +7,17 @@ function FiltersBar({
   onMaxTimeChange,
   tag,
   onTagChange,
+  ingredients,
+  onIngredientsChange,
+  minCalories,
+  onMinCaloriesChange,
+  maxCalories,
+  onMaxCaloriesChange,
+  diet,
+  onDietChange,
   cuisines,
   tags,
+  diets,
 }) {
   return (
     <section className="flex flex-col gap-4 rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 p-6 shadow-sm">
@@ -82,6 +91,55 @@ function FiltersBar({
             className="rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] shadow-sm outline-none focus:border-[var(--accent)]"
           >
             {tags.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--muted)] md:col-span-2">
+          Ingredients (comma separated)
+          <input
+            value={ingredients}
+            onChange={(event) => onIngredientsChange(event.target.value)}
+            placeholder="chicken, garlic, tomato"
+            className="rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] shadow-sm outline-none placeholder:text-[var(--muted-2)] focus:border-[var(--accent)]"
+          />
+        </label>
+
+        <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--muted)]">
+          Min calories
+          <input
+            value={minCalories}
+            onChange={(event) => onMinCaloriesChange(event.target.value)}
+            type="number"
+            min="0"
+            placeholder="0"
+            className="rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] shadow-sm outline-none placeholder:text-[var(--muted-2)] focus:border-[var(--accent)]"
+          />
+        </label>
+
+        <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--muted)]">
+          Max calories
+          <input
+            value={maxCalories}
+            onChange={(event) => onMaxCaloriesChange(event.target.value)}
+            type="number"
+            min="0"
+            placeholder="600"
+            className="rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] shadow-sm outline-none placeholder:text-[var(--muted-2)] focus:border-[var(--accent)]"
+          />
+        </label>
+
+        <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--muted)]">
+          Diet
+          <select
+            value={diet}
+            onChange={(event) => onDietChange(event.target.value)}
+            className="rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] shadow-sm outline-none focus:border-[var(--accent)]"
+          >
+            {diets.map((item) => (
               <option key={item} value={item}>
                 {item}
               </option>

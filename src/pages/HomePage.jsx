@@ -16,6 +16,10 @@ function HomePage() {
   const [cuisine, setCuisine] = useState("All");
   const [maxTime, setMaxTime] = useState("Any");
   const [tag, setTag] = useState("All");
+  const [ingredients, setIngredients] = useState("");
+  const [minCalories, setMinCalories] = useState("");
+  const [maxCalories, setMaxCalories] = useState("");
+  const [diet, setDiet] = useState("All");
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   useEffect(() => {
@@ -29,6 +33,25 @@ function HomePage() {
 
   const tags = useMemo(() => {
     const list = recipes.flatMap((recipe) => recipe.tags || []);
+    return ["All", ...new Set(list)];
+  }, [recipes]);
+
+  const diets = useMemo(() => {
+    const dietKeywords = [
+      "vegetarian",
+      "vegan",
+      "gluten-free",
+      "keto",
+      "low-carb",
+      "dairy-free",
+    ];
+    const list = recipes
+      .flatMap((recipe) => recipe.tags || [])
+      .filter((tagItem) =>
+        dietKeywords.some((keyword) =>
+          tagItem.toLowerCase().includes(keyword)
+        )
+      );
     return ["All", ...new Set(list)];
   }, [recipes]);
 
@@ -66,6 +89,7 @@ function HomePage() {
     return recipes.filter((recipe) => {
       const totalMinutes =
         (recipe.prepTimeMinutes || 0) + (recipe.cookTimeMinutes || 0);
+      const calories = recipe.caloriesPerServing || 0;
 
       const matchesQuery =
         query.trim().length === 0 ||
@@ -73,6 +97,19 @@ function HomePage() {
         recipe.cuisine?.toLowerCase().includes(query.toLowerCase()) ||
         recipe.ingredients?.some((item) =>
           item.toLowerCase().includes(query.toLowerCase())
+        );
+
+      const ingredientTokens = ingredients
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean);
+
+      const matchesIngredients =
+        ingredientTokens.length === 0 ||
+        ingredientTokens.every((token) =>
+          recipe.ingredients?.some((item) =>
+            item.toLowerCase().includes(token.toLowerCase())
+          )
         );
 
       const matchesDifficulty =
@@ -83,18 +120,42 @@ function HomePage() {
       const matchesTag =
         tag === "All" || recipe.tags?.some((item) => item === tag);
 
+      const matchesDiet =
+        diet === "All" || recipe.tags?.some((item) => item === diet);
+
       const matchesTime =
         maxTime === "Any" || totalMinutes <= Number(maxTime);
 
+      const matchesCaloriesMin =
+        minCalories === "" || calories >= Number(minCalories);
+
+      const matchesCaloriesMax =
+        maxCalories === "" || calories <= Number(maxCalories);
+
       return (
         matchesQuery &&
+        matchesIngredients &&
         matchesDifficulty &&
         matchesCuisine &&
         matchesTag &&
-        matchesTime
+        matchesDiet &&
+        matchesTime &&
+        matchesCaloriesMin &&
+        matchesCaloriesMax
       );
     });
-  }, [recipes, query, difficulty, cuisine, maxTime, tag]);
+  }, [
+    recipes,
+    query,
+    ingredients,
+    difficulty,
+    cuisine,
+    maxTime,
+    tag,
+    diet,
+    minCalories,
+    maxCalories,
+  ]);
 
   return (
     <>
@@ -112,8 +173,17 @@ function HomePage() {
           onMaxTimeChange={setMaxTime}
           tag={tag}
           onTagChange={setTag}
+          ingredients={ingredients}
+          onIngredientsChange={setIngredients}
+          minCalories={minCalories}
+          onMinCaloriesChange={setMinCalories}
+          maxCalories={maxCalories}
+          onMaxCaloriesChange={setMaxCalories}
+          diet={diet}
+          onDietChange={setDiet}
           cuisines={cuisines}
           tags={tags}
+          diets={diets}
         />
 
         {loading && (
