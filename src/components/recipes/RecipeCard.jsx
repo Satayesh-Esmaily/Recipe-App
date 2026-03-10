@@ -10,10 +10,17 @@ function RecipeCard({
   const favorite = isFavorite ? isFavorite(recipe.id) : false;
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={() => onOpen(recipe)}
-      className={`group flex w-full flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onOpen(recipe);
+        }
+      }}
+      className={`group flex w-full cursor-pointer flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
         variant === "compact" ? "h-full" : ""
       }`}
     >
@@ -65,7 +72,7 @@ function RecipeCard({
           <span>{recipe.servings || 2} servings</span>
         </div>
       </div>
-    </button>
+    </div>
   );
 }
 
