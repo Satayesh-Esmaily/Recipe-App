@@ -1,10 +1,27 @@
+import { useMemo, useState } from "react";
+
 function RecipeDetailsModal({ recipe, onClose }) {
   if (!recipe) {
     return null;
   }
 
-  const totalMinutes = (recipe.prepTimeMinutes || 0) + (recipe.cookTimeMinutes || 0);
-  const imageUrl = recipe.image || recipe.thumbnail;
+  const totalMinutes =
+    (recipe.prepTimeMinutes || 0) + (recipe.cookTimeMinutes || 0);
+  const images = useMemo(() => {
+    const list = [];
+    if (recipe.image) list.push(recipe.image);
+    if (recipe.thumbnail && recipe.thumbnail !== recipe.image) {
+      list.push(recipe.thumbnail);
+    }
+    if (Array.isArray(recipe.images)) {
+      recipe.images.forEach((img) => {
+        if (img && !list.includes(img)) list.push(img);
+      });
+    }
+    return list;
+  }, [recipe]);
+  const [activeImage, setActiveImage] = useState(images[0] || "");
+  const videoUrl = recipe.video || recipe.videoUrl || "";
 
   return (
     <div
@@ -35,19 +52,55 @@ function RecipeDetailsModal({ recipe, onClose }) {
 
         <div className="grid max-h-[80vh] gap-6 overflow-y-auto p-6 md:grid-cols-[1.1fr_1fr]">
           <div className="flex flex-col gap-4">
-            <div className="overflow-hidden rounded-3xl">
-              {imageUrl ? (
+            <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)]">
+              {activeImage ? (
                 <img
-                  src={imageUrl}
+                  src={activeImage}
                   alt={recipe.name}
                   className="h-72 w-full object-cover"
                 />
               ) : (
-                <div className="flex h-72 items-center justify-center bg-slate-200 text-slate-500">
+                <div className="flex h-72 items-center justify-center bg-[var(--surface)] text-[var(--muted)]">
                   No image
                 </div>
               )}
             </div>
+
+            {images.length > 1 && (
+              <div className="flex gap-3 overflow-x-auto">
+                {images.map((img) => {
+                  const isActive = img === activeImage;
+                  return (
+                    <button
+                      key={img}
+                      type="button"
+                      onClick={() => setActiveImage(img)}
+                      className={`h-16 w-20 overflow-hidden rounded-2xl border transition ${
+                        isActive
+                          ? "border-[var(--accent)]"
+                          : "border-[var(--border)]"
+                      }`}
+                    >
+                      <img
+                        src={img}
+                        alt={`${recipe.name} thumbnail`}
+                        className="h-full w-full object-cover"
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {videoUrl && (
+              <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)]">
+                <video
+                  src={videoUrl}
+                  className="h-56 w-full object-cover"
+                  controls
+                />
+              </div>
+            )}
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-[var(--border)] p-4">
