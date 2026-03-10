@@ -6,6 +6,7 @@ import FeaturedSection from "../components/sections/FeaturedSection";
 import FiltersBar from "../components/filters/FiltersBar";
 import RecipeGrid from "../components/recipes/RecipeGrid";
 import RecipeDetailsModal from "../components/recipes/RecipeDetailsModal";
+import ShoppingList from "../components/recipes/ShoppingList";
 import NewsletterSection from "../components/sections/NewsletterSection";
 
 function HomePage() {
@@ -165,6 +166,10 @@ function HomePage() {
     maxCalories,
   ]);
 
+  const favoriteRecipes = useMemo(() => {
+    return recipes.filter((recipe) => favorites.includes(recipe.id));
+  }, [recipes, favorites]);
+
   useEffect(() => {
     localStorage.setItem("recipe_favorites", JSON.stringify(favorites));
   }, [favorites]);
@@ -231,6 +236,8 @@ function HomePage() {
             isFavorite={isFavorite}
           />
         )}
+
+        <ShoppingList recipes={favoriteRecipes} />
 
         <NewsletterSection />
       </main>
