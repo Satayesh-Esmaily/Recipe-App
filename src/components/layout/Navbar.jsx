@@ -78,18 +78,18 @@ function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <button
-            type="button"
+          <NavLink
+            to="/login"
             className="hidden rounded-full border border-[var(--border-strong)] px-4 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-white md:inline-flex"
           >
             Sign in
-          </button>
-          <button
-            type="button"
+          </NavLink>
+          <NavLink
+            to="/signup"
             className="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[var(--accent-2)]"
           >
             Get the app
-          </button>
+          </NavLink>
         </div>
       </div>
     </header>
