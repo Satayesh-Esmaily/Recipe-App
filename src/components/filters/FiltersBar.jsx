@@ -15,6 +15,8 @@ function FiltersBar({
   onMaxCaloriesChange,
   diet,
   onDietChange,
+  sortBy,
+  onSortChange,
   cuisines,
   tags,
   diets,
@@ -144,6 +146,19 @@ function FiltersBar({
                 {item}
               </option>
             ))}
+          </select>
+        </label>
+
+        <label className="flex flex-col gap-2 text-sm font-semibold text-[var(--muted)]">
+          Sort by
+          <select
+            value={sortBy}
+            onChange={(event) => onSortChange(event.target.value)}
+            className="rounded-2xl border border-[var(--border-strong)] bg-[var(--surface-2)] px-3 py-2 text-sm text-[var(--text)] shadow-sm outline-none focus:border-[var(--accent)]"
+          >
+            <option value="popular">Most popular</option>
+            <option value="fastest">Fastest</option>
+            <option value="newest">Newest</option>
           </select>
         </label>
       </div>

@@ -23,6 +23,7 @@ function HomePage() {
   const [minCalories, setMinCalories] = useState("");
   const [maxCalories, setMaxCalories] = useState("");
   const [diet, setDiet] = useState("All");
+  const [sortBy, setSortBy] = useState("popular");
   const [favorites, setFavorites] = useState(() => {
     try {
       const stored = localStorage.getItem("recipe_favorites");
@@ -97,7 +98,7 @@ function HomePage() {
   }, [recipes, cuisines.length]);
 
   const filteredRecipes = useMemo(() => {
-    return recipes.filter((recipe) => {
+    const filtered = recipes.filter((recipe) => {
       const totalMinutes =
         (recipe.prepTimeMinutes || 0) + (recipe.cookTimeMinutes || 0);
       const calories = recipe.caloriesPerServing || 0;
@@ -155,6 +156,22 @@ function HomePage() {
         matchesCaloriesMax
       );
     });
+    const sorted = [...filtered].sort((a, b) => {
+      const timeA = (a.prepTimeMinutes || 0) + (a.cookTimeMinutes || 0);
+      const timeB = (b.prepTimeMinutes || 0) + (b.cookTimeMinutes || 0);
+      if (sortBy === "fastest") {
+        return timeA - timeB;
+      }
+      if (sortBy === "newest") {
+        return (b.id || 0) - (a.id || 0);
+      }
+      const scoreA = a.rating || 0;
+      const scoreB = b.rating || 0;
+      const reviewsA = a.reviewCount || 0;
+      const reviewsB = b.reviewCount || 0;
+      return scoreB + reviewsB * 0.01 - (scoreA + reviewsA * 0.01);
+    });
+    return sorted;
   }, [
     recipes,
     query,
@@ -166,6 +183,7 @@ function HomePage() {
     diet,
     minCalories,
     maxCalories,
+    sortBy,
   ]);
 
   const favoriteRecipes = useMemo(() => {
@@ -219,6 +237,8 @@ function HomePage() {
           onMaxCaloriesChange={setMaxCalories}
           diet={diet}
           onDietChange={setDiet}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
           cuisines={cuisines}
           tags={tags}
           diets={diets}
