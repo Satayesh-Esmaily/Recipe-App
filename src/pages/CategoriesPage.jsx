@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { fetchRecipes } from "../features/recipes/recipesSlice";
 
 function CategoriesPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { recipes, loading, error } = useSelector((state) => state.recipes);
   const [query, setQuery] = useState("");
 
@@ -119,7 +121,20 @@ function CategoriesPage() {
           {filteredCategories.map((category) => (
             <article
               key={category.cuisine}
-              className="flex flex-col gap-4 rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 p-6"
+              role="button"
+              tabIndex={0}
+              onClick={() =>
+                navigate(`/categories/${encodeURIComponent(category.cuisine)}`)
+              }
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  navigate(
+                    `/categories/${encodeURIComponent(category.cuisine)}`
+                  );
+                }
+              }}
+              className="flex cursor-pointer flex-col gap-4 rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 p-6 transition hover:-translate-y-1 hover:shadow-lg"
             >
               <div className="flex items-start justify-between">
                 <div>
