@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { fetchRecipes } from "../features/recipes/recipesSlice";
 import Hero from "../components/hero/Hero";
 import FeaturedSection from "../components/sections/FeaturedSection";
@@ -11,6 +12,7 @@ import NewsletterSection from "../components/sections/NewsletterSection";
 
 function HomePage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { recipes, loading, error } = useSelector((state) => state.recipes);
   const [query, setQuery] = useState("");
   const [difficulty, setDifficulty] = useState("All");
@@ -188,11 +190,7 @@ function HomePage() {
         query={query}
         onQueryChange={setQuery}
         stats={stats}
-        onExplore={() =>
-          document.getElementById("recipes-section")?.scrollIntoView({
-            behavior: "smooth",
-          })
-        }
+        onExplore={() => navigate("/featured")}
       />
 
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 pb-20">
@@ -201,11 +199,7 @@ function HomePage() {
           onOpen={setSelectedRecipe}
           onToggleFavorite={toggleFavorite}
           isFavorite={isFavorite}
-          onViewAll={() =>
-            document.getElementById("recipes-section")?.scrollIntoView({
-              behavior: "smooth",
-            })
-          }
+          onViewAll={() => navigate("/featured")}
         />
 
         <FiltersBar

@@ -1,0 +1,89 @@
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRecipes } from "../features/recipes/recipesSlice";
+import RecipeGrid from "../components/recipes/RecipeGrid";
+import RecipeDetailsModal from "../components/recipes/RecipeDetailsModal";
+
+function FeaturedPage() {
+  const dispatch = useDispatch();
+  const { recipes, loading, error } = useSelector((state) => state.recipes);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const stored = localStorage.getItem("recipe_favorites");
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    if (!recipes.length) {
+      dispatch(fetchRecipes());
+    }
+  }, [dispatch, recipes.length]);
+
+  useEffect(() => {
+    localStorage.setItem("recipe_favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
+  const featuredRecipes = useMemo(() => {
+    return [...recipes]
+      .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+      .slice(0, 18);
+  }, [recipes]);
+
+  const toggleFavorite = (id) => {
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const isFavorite = (id) => favorites.includes(id);
+
+  return (
+    <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-16">
+      <header className="flex flex-col gap-4 rounded-3xl border border-[var(--border)] bg-[var(--surface)]/80 p-8">
+        <p className="text-xs uppercase tracking-[0.3em] text-[var(--muted)]">
+          Featured
+        </p>
+        <h1 className="font-display text-3xl text-[var(--text)]">
+          Top-rated recipes
+        </h1>
+        <p className="max-w-2xl text-sm text-[var(--muted)]">
+          A curated list of the highest-rated recipes in the collection.
+        </p>
+      </header>
+
+      {loading && (
+        <div className="rounded-3xl border border-dashed border-[var(--border)] bg-[var(--surface)]/80 p-10 text-center text-[var(--muted)]">
+          Loading featured recipes...
+        </div>
+      )}
+
+      {!loading && error && (
+        <div className="rounded-3xl border border-[#5a1a2f] bg-[#2a0f1f]/70 p-10 text-center text-[#ff9bc7]">
+          {error}
+        </div>
+      )}
+
+      {!loading && !error && (
+        <RecipeGrid
+          recipes={featuredRecipes}
+          onOpen={setSelectedRecipe}
+          onToggleFavorite={toggleFavorite}
+          isFavorite={isFavorite}
+        />
+      )}
+
+      <RecipeDetailsModal
+        recipe={selectedRecipe}
+        onClose={() => setSelectedRecipe(null)}
+        onToggleFavorite={toggleFavorite}
+        isFavorite={selectedRecipe ? isFavorite(selectedRecipe.id) : false}
+      />
+    </main>
+  );
+}
+
+export default FeaturedPage;

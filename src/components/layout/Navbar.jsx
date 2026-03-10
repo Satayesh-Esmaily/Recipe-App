@@ -28,6 +28,14 @@ function Navbar() {
             Discover
           </NavLink>
           <NavLink
+            to="/featured"
+            className={({ isActive }) =>
+              `transition hover:text-white ${isActive ? "text-white" : ""}`
+            }
+          >
+            Featured
+          </NavLink>
+          <NavLink
             to="/categories"
             className={({ isActive }) =>
               `transition hover:text-white ${isActive ? "text-white" : ""}`
